@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Built-By: Binoz
+Build-Jdk: 22.0.2
+Implementation-Title: spring-boot-not-jwt
+Implementation-Version: 1.1
+Implementation-Vendor-Id: com.javaweb
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-boot
+ -starter-parent/spring-boot-not-jwt
+Created-By: Maven Integration for Eclipse
+
