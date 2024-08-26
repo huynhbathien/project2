@@ -1,6 +1,7 @@
 package com.javaweb.api;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,16 +13,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.javaweb.model.BuildingDTO;
 import com.javaweb.service.BuildingService;
 
+
 @RestController
 public class BuildingAPI {
 
-	@Autowired
+	
+	@Autowired 
 	private BuildingService service;
-
+	
 	@GetMapping(value = "/api/building/")
-	public List<BuildingDTO> getBuilding(@RequestParam(value="name",required = false)String name,
-										@RequestParam(value="districtid",required = false)Long district) {
-		List<BuildingDTO> result=service.finBuilding(name,district);
+	public List<BuildingDTO> getBuilding(@RequestParam Map<String, Object> params,@RequestParam List<String>typecode) {
+		List<BuildingDTO> result=service.findAll(params,typecode);
 		return result;
 	}
 
@@ -42,7 +44,7 @@ public class BuildingAPI {
 	 * BuildingDTO dto2=new BuildingDTO(); dto2.setName("DEF");
 	 * dto2.setNumberOfBasement(4); dto2.setStreet("An Thuong");
 	 * dto2.setWar("Đà Nẵng"); listBD.add(dto2); return listBD; }
-	 */
+	 
 	/*
 	 * @PostMapping(value = "/api/building/") public BuildingDTO
 	 * postBuilding(@RequestBody BuildingDTO buildingDTO) { return buildingDTO; }
