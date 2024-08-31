@@ -7,11 +7,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.javaweb.convert.BuildingDTOConvert;
 import com.javaweb.model.BuildingDTO;
 import com.javaweb.repository.BuildingRepository;
-import com.javaweb.repository.DistrictRepository;
 import com.javaweb.repository.entity.BuildingEntity;
-import com.javaweb.repository.entity.DistrictEntity;
 import com.javaweb.service.BuildingService;
 
 @Service
@@ -20,7 +19,7 @@ public class BuildingServiceImpl implements BuildingService {
 	@Autowired
 	private BuildingRepository buildingRepository;
 	@Autowired
-	private DistrictRepository districtRepository;
+	private BuildingDTOConvert buildingDTOConvert;
 
 	@Override
 	public List<BuildingDTO> findAll(Map<String, Object> params, List<String> typecode) {
@@ -28,10 +27,7 @@ public class BuildingServiceImpl implements BuildingService {
 		List<BuildingEntity> listBuildingEntity = buildingRepository.finAll(params, typecode);
 		List<BuildingDTO> listBuildingDTO = new ArrayList<BuildingDTO>();
 		for (BuildingEntity item : listBuildingEntity) {
-			BuildingDTO dto = new BuildingDTO();
-			dto.setName(item.getName());
-			DistrictEntity districtEntity=districtRepository.findNameById(item.getDistrictid()); 
-			dto.setAddress(item.getStreet() + "," + item.getWard() + " "+districtEntity);
+			BuildingDTO dto = buildingDTOConvert.convertToBuildingDto(item);
 			listBuildingDTO.add(dto);
 		}
 		return listBuildingDTO;

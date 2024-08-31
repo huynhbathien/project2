@@ -22,7 +22,7 @@ public class BuildingAPI {
 	private BuildingService service;
 	
 	@GetMapping(value = "/api/building/")
-	public List<BuildingDTO> getBuilding(@RequestParam Map<String, Object> params,@RequestParam List<String>typecode) {
+	public List<BuildingDTO> getBuilding(@RequestParam Map<String, Object> params,@RequestParam(value = "typeCode",required = false) List<String>typecode) {
 		List<BuildingDTO> result=service.findAll(params,typecode);
 		return result;
 	}

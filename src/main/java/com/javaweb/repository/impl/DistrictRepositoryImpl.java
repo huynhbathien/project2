@@ -10,18 +10,16 @@ import org.springframework.stereotype.Repository;
 
 import com.javaweb.repository.DistrictRepository;
 import com.javaweb.repository.entity.DistrictEntity;
+import com.javaweb.utils.ConnectionJDBCUtil;
 
 @Repository
 public class DistrictRepositoryImpl implements DistrictRepository {
-	static final String DB_URL = "jdbc:mysql://localhost:3306/estatebasic";
-	static final String USER = "root";
-	static final String PASS = "05042003";
 
 	@Override
 	public DistrictEntity findNameById(Long id) {
 		String sql = "select d.name from district d where d.id=" + id + ";";
 		DistrictEntity districtEntity = new DistrictEntity();
-		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+		try (Connection conn = ConnectionJDBCUtil.getConnection();
 				Statement stmt = conn.createStatement();
 				ResultSet rs = stmt.executeQuery(sql.toString());) {
 			while (rs.next()) {
