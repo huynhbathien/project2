@@ -11,6 +11,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Repository;
 
 import com.javaweb.builder.BuildingSearchBuilder;
@@ -21,9 +27,21 @@ import com.javaweb.utils.NumberUtil;
 import com.javaweb.utils.StringUtil;
 
 @Repository
+@PropertySource("classpath:application.properties")
+
 public class BuildingRepositoryImpl implements BuildingRepository {
 
+	@PersistenceContext
+	private EntityManager entityManager;
 
+	@Value("${spring.datasource.url}")
+	private String DB_URL ;
+	@Value("${spring.datasource.username}")
+	private String USER ;
+	@Value("${spring.datasource.password}")
+	private String PASS ;
+	
+	
 	public static void joinTable(BuildingSearchBuilder builder, StringBuilder sql) {
 		Long staffID = builder.getStaffId();
 		if (staffID!=null) {
@@ -113,31 +131,7 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 
 		sql.append(where);
 
-		List<BuildingEntity> result = new ArrayList<>();
-		try (Connection conn = ConnectionJDBCUtil.getConnection();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(sql.toString())) {
-
-			while (rs.next()) {
-				BuildingEntity buildingEntity = new BuildingEntity();
-				buildingEntity.setId(rs.getLong("id"));
-				buildingEntity.setName(rs.getString("name"));
-				buildingEntity.setWard(rs.getString("ward"));
-				buildingEntity.setDistrictid(rs.getLong("districtid"));
-				buildingEntity.setStreet(rs.getString("street"));
-				buildingEntity.setFloorArea(rs.getLong("floorarea"));
-				buildingEntity.setRentPrice(rs.getLong("rentprice"));
-				buildingEntity.setServiceFee(rs.getString("servicefee"));
-				buildingEntity.setBrokerageFee(rs.getLong("brokeragefee"));
-				buildingEntity.setManagerName(rs.getString("managername"));
-				buildingEntity.setManagerPhoneNumber(rs.getString("managerphonenumber"));
-				result.add(buildingEntity);
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("Failed to fetch buildings");
-		}
-		return result;
+		Query query=entityManager.createNativeQuery(sql.toString(), BuildingEntity.class);
+		return query.getResultList();
 	}
 }
