@@ -56,7 +56,7 @@ public class BuildingEntity {
 	private List<RentAreaEntity> rentArea  =new ArrayList<>();  
 	
 	
-	//fetch thuộc tính của các anotation lấy dữ liệu các ano có dduoi many nên dùng lazy và đuôi one eager
+	//fetch thuộc tính của các anotation lấy dữ liệu các ano có đuôi many nên dùng lazy và đuôi one là eager
 	//fetch mặc định là lazy: là lấy tất cả các  dữ liệu có liên quan đến bảng district 
 	@ManyToOne
 	@JoinColumn(name="districtid")

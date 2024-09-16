@@ -1,4 +1,4 @@
-package com.javaweb.repository.impl;
+package com.javaweb.repository.custom.impl;
 
 import java.util.List;
 
@@ -10,16 +10,14 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import com.javaweb.builder.BuildingSearchBuilder;
-import com.javaweb.repository.BuildingRepository;
 import com.javaweb.repository.entity.BuildingEntity;
 
 @Repository
 @Primary
-public class JPABuildingRepository implements BuildingRepository{
+public class JPABuildingRepository {
 
 	@PersistenceContext
 	private EntityManager entityManager;
-	@Override
 	public List<BuildingEntity> finAll(BuildingSearchBuilder builder) {
 		//JPQL
 		/*
